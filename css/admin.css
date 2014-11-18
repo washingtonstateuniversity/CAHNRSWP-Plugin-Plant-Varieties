@@ -1,0 +1,29 @@
+#variety_settings .variety-setting-field {
+	border: 1px solid #ccc;
+	padding: 1rem 0;
+	margin: 0 1% 1%;
+	width: 46%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#variety_settings .variety-inner {
+	margin: 0 1rem;
+}
+
+#variety_settings label {
+	font-weight: bold;
+}
+#variety_settings #variety_variety_type_setting.variety-setting-field {
+	display: block;
+	border: none;
+	margin: 0 ;
+	width: auto;}
+#variety_settings #variety_variety_type_setting select {
+	font-size: 20px;
+	height: 40px; 
+}
+#variety_settings #variety_variety_type_setting label {
+	font-size: 1.4rem;
+}
+
