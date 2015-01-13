@@ -1,0 +1,13 @@
+{ "variety-taxonomy": {
+	"variety-type" : {
+		"apple-variety" : { "title":"Apple Variety" },
+		"cherry-variety" : { "title":"Cherry Variety" },
+		"pear-variety" : { "title":"Pear Variety" },
+		"stone-fruit-variety" : { "title":"Stone Fruit Variety" }
+	},
+	"harvest-general" : {
+		"harvest-early" : { "title":"Early Harvest" },
+		"harvest-midsummer" : { "title":"Midsummer Harvest" },
+		"harvest-late" : { "title":"Late Harvest"  }
+	}
+}}
