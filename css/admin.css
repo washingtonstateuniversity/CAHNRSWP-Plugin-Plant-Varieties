@@ -1,29 +1,46 @@
-#variety_settings .variety-setting-field {
-	border: 1px solid #ccc;
-	padding: 1rem 0;
-	margin: 0 1% 1%;
-	width: 46%;
+.cwpv-form-section {
+	background: #777;
+	border-radius: 4px;
+	margin: 1rem 0;
+	padding: 0.5rem;
+}
+
+.cwpv-form-section p {
+	margin-left: 1%;
+	margin-right: 1%;
+}
+
+.cwpv-form-section p.inline-half {
+	width: 48%;
 	display: inline-block;
 	vertical-align: top;
 }
 
-#variety_settings .variety-inner {
-	margin: 0 1rem;
-}
 
-#variety_settings label {
+.cwpv-form-section label {
+	color: #ddd;
 	font-weight: bold;
-}
-#variety_settings #variety_variety_type_setting.variety-setting-field {
-	display: block;
-	border: none;
-	margin: 0 ;
-	width: auto;}
-#variety_settings #variety_variety_type_setting select {
-	font-size: 20px;
-	height: 40px; 
-}
-#variety_settings #variety_variety_type_setting label {
-	font-size: 1.4rem;
+	font-size: 1rem;
 }
 
+.cwpv-form-section select,
+.cwpv-form-section input[type=text] {
+	color: #555;
+	font-size: 1.1rem;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 0.5rem;
+}
+
+.cwpv-form-section input[type=text] {
+	width: 80%;
+}
+
+.cwpv-form-section textarea {
+	width: 80%;
+	font-size: 1.1rem;
+	min-height: 4rem;
+}
+.cwpv-form-section .helper-text {
+	color: #fff;
+}

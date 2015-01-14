@@ -19,11 +19,11 @@ class init_CAHNRSWP_varieties {
 	
 	public static function get_instance(){
 		
-		if( null == self::$instance ) {
+		if ( null == self::$instance ) {
 			
 			self::$instance = new self;
 			
-		}
+		};
 		
 		return self::$instance;
 		
@@ -31,25 +31,72 @@ class init_CAHNRSWP_varieties {
 	
 	private function __construct(){
 		
+		define( 'CAHNRSWPVARIETYURL' , plugin_dir_url( __FILE__ ) ); // Plugin Base url
+		
+		define( 'CAHNRSWPVARIETYDIR' , plugin_dir_path( __FILE__ ) ); // Plugin Directory Path
+		
 		$this->model = new CAHNRSWP_varieties_model();
 		
 		$this->view = new CAHNRSWP_varieties_view( $this->control , $this->model );
-		
-		add_action( 'plugins_loaded', array( $this ,'load_texdomain' ) );
 		
 		add_action( 'init', array( $this , 'add_custom_post_type' ) );
 		
 		add_action( 'widgets_init', array( $this , 'add_widgets' ) );
 		
-		add_action( 'add_meta_boxes', array( $this , 'register_meta_box' ) );
+		add_action( 'edit_form_after_title', array( $this , 'cwp_edit_form_after_title' ) );
 		
-		add_action( 'save_post', array( $this , 'save_variety' ) );
+		//add_action( 'add_meta_boxes', array( $this , 'register_meta_box' ) );
+		
+		add_action( 'save_post', array( $this , 'cwp_save_post' ) );
 		
 		add_action( 'admin_enqueue_scripts', array( $this , 'add_admin_scripts' ) );
 		
 		add_action( 'wp_enqueue_scripts', array( $this , 'cahnrswp_wp_enqueue_scripts' ) );
 		
 	} // end constructor
+	
+	/*
+	 * @desc - Adds edit form for selected variety type
+	 * @param object $post - WP Post object
+	*/
+	public function cwp_edit_form_after_title( $post ) {
+		
+			if( 'variety' == $post->post_type ) {
+			
+			require_once CAHNRSWPVARIETYDIR . '/classes/class-cahnrswp-varieties-variety.php';
+			
+			$variety = new CAHNRSWP_Varieties_Variety();
+			
+			$variety->cwp_set_variety_from_meta( $post );
+			
+			$variety->cwp_output_editor();
+		
+		}
+		
+	} // end method cwp_edit_form_after_title
+	
+	/*
+	 * @desc - Saves variety data
+	 * @param int $post_id
+	*/
+	public function cwp_save_post( $post_id ){
+		
+		require_once CAHNRSWPVARIETYDIR . '/classes/class-cahnrswp-varieties-variety.php';
+		
+		$variety = new CAHNRSWP_Varieties_Variety();
+		
+		$variety->cwp_save_variety( $post_id );
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public function add_widgets(){
 		
@@ -58,29 +105,23 @@ class init_CAHNRSWP_varieties {
 		
 	} // end add_widgets
 	
-	public function load_texdomain(){
-		
-		load_plugin_textdomain( 'cahnrs-varieties' , false , dirname( plugin_basename( __FILE__ ) ) . '/langs' );
-		
-	} // end load_textdomain
-	
 	public function add_custom_post_type(){
 		
 		$labels = array(
-			'name'               => _x( 'Varieties', 'post type general name', 'cahnrs-varieties' ),
-			'singular_name'      => _x( 'Variety', 'post type singular name', 'cahnrs-varieties' ),
-			'menu_name'          => _x( 'Varieties', 'admin menu', 'cahnrs-varieties' ),
-			'name_admin_bar'     => _x( 'Variety', 'add new on admin bar', 'cahnrs-varieties' ),
-			'add_new'            => _x( 'Add New', 'Variety', 'cahnrs-varieties' ),
-			'add_new_item'       => __( 'Add New Variety', 'cahnrs-varieties' ),
-			'new_item'           => __( 'New Variety', 'cahnrs-varieties' ),
-			'edit_item'          => __( 'Edit Variety', 'cahnrs-varieties' ),
-			'view_item'          => __( 'View Variety', 'cahnrs-varieties' ),
-			'all_items'          => __( 'All Varieties', 'cahnrs-varieties' ),
-			'search_items'       => __( 'Search Varieties', 'cahnrs-varieties' ),
-			'parent_item_colon'  => __( 'Parent Varieties:', 'cahnrs-varieties' ),
-			'not_found'          => __( 'No varieties found.', 'cahnrs-varieties' ),
-			'not_found_in_trash' => __( 'No varieties found in Trash.', 'cahnrs-varieties' )
+			'name'               => 'Varieties',
+			'singular_name'      => 'Variety',
+			'menu_name'          => 'Varieties',
+			'name_admin_bar'     => 'Variety',
+			'add_new'            => 'Add New',
+			'add_new_item'       => 'Add New Variety',
+			'new_item'           => 'New Variety',
+			'edit_item'          => 'Edit Variety',
+			'view_item'          => 'View Variety',
+			'all_items'          => 'All Varieties',
+			'search_items'       => 'Search Varieties',
+			'parent_item_colon'  => 'Parent Varieties:',
+			'not_found'          => 'No varieties found.',
+			'not_found_in_trash' => 'No varieties found in Trash.',
 		); // end $labels
 	
 		$args = array(
@@ -102,31 +143,6 @@ class init_CAHNRSWP_varieties {
 		register_post_type( 'variety', $args );
 		
 	} // end add_custom_post_type
-	
-	public function register_meta_box(){
-		
-		add_meta_box(
-			'variety_settings',
-			__( 'Variety Settings', 'cahnrs-varieties' ),
-			array( $this, 'add_meta_box'),
-			'variety',
-			'normal',
-			'high'
-		);
-		
-	} // end register_meta_box
-	
-	public function add_meta_box( $post ){
-		
-		$this->set_variety( $post->ID );
-		
-		$this->set_taxonomy();
-		
-		$this->set_view( 'metabox');
-		
-		$this->view->output_view();
-		
-	} // end add_meta_box
 	
 	public function add_admin_scripts(){
 		
@@ -152,10 +168,7 @@ class init_CAHNRSWP_varieties {
 		
 	} // end set_view
 	
-	public function save_variety( $post_id ){
-		
-		$this->model->save_variety( $post_id );
-	}
+	
 	
 	public function set_taxonomy(){
 		
@@ -190,7 +203,7 @@ class CAHNRSWP_varieties_model {
 	
 	public function set_variety( $post_id ){
 		
-		if( $this->post_id != $post_id ){
+		if ( $this->post_id != $post_id ){
 			
 			$this->post_id = $post_id;
 			
@@ -228,7 +241,7 @@ class CAHNRSWP_varieties_model {
 		
 		$tax = @file_get_contents( plugin_dir_path( __FILE__ ).'taxonomy.json'  );
 		
-		if( $tax ) {
+		if ( $tax ) {
 			
 			$tax = json_decode( $tax , true );
 		}
@@ -238,12 +251,12 @@ class CAHNRSWP_varieties_model {
 	
 	public function check_meta( $key , $default = 'na' ){
 		
-		if( isset( $this->meta[$key][0] ) ){
+		if ( isset( $this->meta[$key][0] ) ){
 			
 			return $this->meta[$key][0];
 			
 		} 
-		else if( $default != 'na' ) {
+		else if ( $default != 'na' ) {
 			
 			return $default;
 			
@@ -341,7 +354,7 @@ class CAHNRSWP_varieties_model {
 			
 			$f_key = '_'.$f_name;
 			
-			if( isset( $_POST[ $f_key ] ) ){
+			if ( isset( $_POST[ $f_key ] ) ){
 				
 				$instance = sanitize_text_field( $_POST[ $f_key ] );
 				

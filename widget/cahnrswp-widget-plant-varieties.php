@@ -21,8 +21,7 @@ class CAHNRSWP_Widget_Plant_Varieties extends WP_Widget {
 	public function widget( $args, $instance ) {
 		
 		include 'inc/demo-tabs.php';
-		
-		
+	
 	}
 
 	/**
