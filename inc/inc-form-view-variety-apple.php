@@ -38,18 +38,18 @@
     </p><p class="inline-half" >
         <label>Storage Time</label><br />
         <select name="_variety[storability]">
-        	<option value="two months" <?php selected( $this->model->time_to_harvest , 'two months' ); ?> >2 Months</option>
-            <option value="three months" <?php selected( $this->model->time_to_harvest , 'three months' ); ?> >3 Months</option>
-            <option value="four months" <?php selected( $this->model->time_to_harvest , 'four months' ); ?> >4 Months</option>
-            <option value="five months" <?php selected( $this->model->time_to_harvest , 'five months' ); ?> >5 Months</option>
-            <option value="six months" <?php selected( $this->model->time_to_harvest , 'six months' ); ?> >6 Months</option>
-            <option value="seven months" <?php selected( $this->model->time_to_harvest , 'seven months' ); ?> >7 Months</option>
-            <option value="eight months" <?php selected( $this->model->time_to_harvest , 'eight months' ); ?> >8 Months</option>
-            <option value="nine months" <?php selected( $this->model->time_to_harvest , 'nine months' ); ?> >9 Months</option>
-            <option value="ten months" <?php selected( $this->model->time_to_harvest , 'ten months' ); ?> >10 Months</option>
-            <option value="eleven months" <?php selected( $this->model->time_to_harvest , 'eleven months' ); ?> >11 Months</option>
-            <option value="twelve months" <?php selected( $this->model->time_to_harvest , 'twelve months' ); ?> >12 Months</option>
-            <option value="thriteen months" <?php selected( $this->model->time_to_harvest , 'thriteen months' ); ?> >13 Months</option>
+        	<option value="two months" <?php selected( $this->model->storability , 'two months' ); ?> >2 Months</option>
+            <option value="three months" <?php selected( $this->model->storability , 'three months' ); ?> >3 Months</option>
+            <option value="four months" <?php selected( $this->model->storability , 'four months' ); ?> >4 Months</option>
+            <option value="five months" <?php selected( $this->model->storability , 'five months' ); ?> >5 Months</option>
+            <option value="six months" <?php selected( $this->model->storability , 'six months' ); ?> >6 Months</option>
+            <option value="seven months" <?php selected( $this->model->storability , 'seven months' ); ?> >7 Months</option>
+            <option value="eight months" <?php selected( $this->model->storability , 'eight months' ); ?> >8 Months</option>
+            <option value="nine months" <?php selected( $this->model->storability , 'nine months' ); ?> >9 Months</option>
+            <option value="ten months" <?php selected( $this->model->storability , 'ten months' ); ?> >10 Months</option>
+            <option value="eleven months" <?php selected( $this->model->storability , 'eleven months' ); ?> >11 Months</option>
+            <option value="twelve months" <?php selected( $this->model->storability , 'twelve months' ); ?> >12 Months</option>
+            <option value="thriteen months" <?php selected( $this->model->storability , 'thriteen months' ); ?> >13 Months</option>
 		</select>
     </p>
 </div>
