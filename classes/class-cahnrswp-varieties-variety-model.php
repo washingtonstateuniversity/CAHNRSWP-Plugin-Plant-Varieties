@@ -27,6 +27,8 @@ class CAHNRSWP_Varieties_Variety_Model {
 	
 	public $summary;
 	
+	public $availabiltiy;
+	
 	public $copy;
 	
 	private $fields = array(
@@ -71,6 +73,8 @@ class CAHNRSWP_Varieties_Variety_Model {
 			$this->color = ( isset( $variety_meta['color'] ) ) ? $variety_meta['color'] : '';
 	
 			$this->flavor_profile = ( isset( $variety_meta['flavor_profile'] ) ) ? $variety_meta['flavor_profile'] : '';
+			
+			$this->availabiltiy = ( isset( $variety_meta['availabiltiy'] ) ) ? $variety_meta['availabiltiy'] : '';
 	
 			$this->storability = ( isset( $variety_meta['storability'] ) ) ? $variety_meta['storability'] : '';
 			
@@ -94,6 +98,8 @@ class CAHNRSWP_Varieties_Variety_Model {
 			'harvest' => 'text',
 			'parentage' => 'text',
 			'origin' => 'text',
+			'origin_country' => 'text',
+			'origin_year' => 'text', 
 			'IP' => 'text',
 			'color' => 'text',
 			'flavor_profile' => 'text',
@@ -150,14 +156,128 @@ class CAHNRSWP_Varieties_Variety_Model {
 		
 		update_post_meta( $post_id , '_variety' , $varieties );
 		
+		$this->cwp_set_tags( $post_id );
+		
+		
+		
+		//if( isset( $this->harvest ) ){
+			
+			//$terms = explode( ',' , $this->harvest );
+			
+			//$term_slugs = array();
+			
+			//foreach( $terms as $term ){
+				
+				//$term_data = get_term_by( 'name' , $term , 'post_tag' ); 
+				
+				//wp_set_object_terms( $post_id, $term_data->slug , 'post_tag', true );
+				
+				
+				/*$term_data = get_term_by( 'name' , $term , 'post_tag'); 
+				
+				if ( $term_data ){
+					
+					$term_slugs 
+					
+				} else {
+				}*/
+				
+				
+				
+				//$term_data = term_exists( $term , 'post_tag' );
+				
+				//if( $term_data ) {
+					
+					//$term_ids[] = $term_data['term_id'];
+					
+				//} else {
+				
+					//$term_data = wp_insert_term( $term , 'post_tag' );
+					
+					//$term_ids[] = $term_data['term_id'];
+				
+				//}
+				 
+			//}; // end foreach
+			
+			//if ( ! empty( $term_ids ) ){
+				
+				//wp_set_object_terms( $post_id, $term_ids, 'post_tag', true );
+				
+			//}; // end if
+			
+		//}; // end if
+		
 		
 	} // end method cwp_save_variety
+	
+	/*
+	 * @desc - Sets tags from data
+	 * @param int $post_id
+	*/
+	private function cwp_set_tags( $post_id ){
+		
+		$tag_fields = array(
+						'harvest',
+						'flavor_profile',
+						'IP',
+						'origin_country',
+						'origin',
+						'storability',
+					);
+					
+		$term_slugs = array();
+					
+		foreach( $tag_fields as $tag_field ){
+			
+			if ( isset( $this->$tag_field ) && $this->$tag_field ){
+				
+				$terms = explode( ',' , $this->$tag_field );
+				
+				foreach( $terms as $term ){
+					
+					if( $term ){
+					
+						$term_data = get_term_by( 'name' , trim( $term ) , 'post_tag' ); 
+						
+						//var_dump( $term_data->term_id ); 
+						
+						//var_dump( $term );
+						
+						if ( ! $term_data ){
+							
+							$term_data = wp_insert_term( $term, 'post_tag' );
+							
+							if ( ! empty( $term_data['term_id'] ) ) {
+								
+								$term_slugs[] = $term_data['term_id'];
+								
+							}; // end if
+							
+						} else {
+							
+							$term_slugs[] = $term_data->term_id;
+							
+						}; // end if
+						
+					}; // end if
+					 
+				}; // end foreach
+				
+			}; // end if
+			
+		}; // end foreach
+		
+		//var_dump( $term_slugs );
+				
+		wp_set_object_terms( $post_id, $term_slugs , 'post_tag', true );
+		
+	} // end method cwp_set_tags
 	
 	/*
 	 * @desc - Cleans post values based on $fields
 	 * @return array - Cleaned data
 	*/
-	
 	private function cwp_clean_post( $key ){
 		
 		$clean_fields = array();

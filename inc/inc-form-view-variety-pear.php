@@ -1,13 +1,25 @@
 <?php wp_nonce_field('submit_variety','variety_nonce'); ?>
-<div id="cwpv-apple" class="cwpv-form-section">
+<div id="cwpv-pear" class="cwpv-form-section">
 	<p class="inline-half" >
+        <label>Pear Type: </label><br />
+        <select name="_variety[sub_type]">
+            <option value="">Select</option>
+            <option value="winter-pear" <?php selected( $this->model->sub_type , 'winter-pear' ); ?> >Winter Pear</option>
+            <option value="summer-pear" <?php selected( $this->model->sub_type , 'summer-pear' ); ?> >Summer Pear</option>
+            <option value="asian-pear" <?php selected( $this->model->sub_type , 'asian-pear' ); ?> >Asian Pear</option>
+        </select>
+    </p><p class="inline-half" >
         <label>Harvest Time: </label><br />
         <select name="_variety[harvest]">
             <option value="">Select</option>
-            <option value="early" <?php selected( $this->model->harvest , 'early' ); ?> >Early</option>
-            <option value="midseason" <?php selected( $this->model->harvest , 'midseason' ); ?> >Midseason</option>
-            <option value="late" <?php selected( $this->model->harvest , 'late' ); ?> >Late</option>
+            <option value="late-summer" <?php selected( $this->model->harvest , 'late-summer' ); ?> >Late Summer</option>
+            <option value="early-fall" <?php selected( $this->model->harvest , 'early-fall' ); ?> >Early Fall</option>
+            <option value="fall" <?php selected( $this->model->harvest , 'fall' ); ?> >Fall</option>
+            <option value="late-fall" <?php selected( $this->model->harvest , 'late-fall' ); ?> >Late Fall</option>
         </select>
+    </p><p class="inline-half" >
+        <label>Availability: </label><br />
+        <input type="text" name="_variety[availability]" value="<?php echo $this->model->availability;?>" /><br />
     </p><p class="inline-half" >
         <label>Parentage: </label><br />
         <input type="text" name="_variety[parentage]" value="<?php echo $this->model->parentage;?>" /><br />
@@ -29,7 +41,7 @@
         <input type="text" name="_variety[IP]" value="<?php echo $this->model->IP;?>" /><br />
         <span class="helper-text">Seperate multiple values with ",".</span>
     </p><p class="inline-half" >
-        <label>Color:</label><br />
+        <label>Appearance:</label><br />
         <textarea name="_variety[color]"><?php echo $this->model->color;?></textarea>
     </p><p class="inline-half" >
         <label>Flavor Profile:</label><br />
@@ -38,6 +50,7 @@
     </p><p class="inline-half" >
         <label>Storage Duration</label><br />
         <select name="_variety[storability]">
+        	<option value="one months" <?php selected( $this->model->storability , 'two months' ); ?> >1 Month</option>
         	<option value="two months" <?php selected( $this->model->storability , 'two months' ); ?> >2 Months</option>
             <option value="three months" <?php selected( $this->model->storability , 'three months' ); ?> >3 Months</option>
             <option value="four months" <?php selected( $this->model->storability , 'four months' ); ?> >4 Months</option>

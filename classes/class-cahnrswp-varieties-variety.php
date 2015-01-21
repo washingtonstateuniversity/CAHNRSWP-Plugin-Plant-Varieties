@@ -132,6 +132,15 @@ class CAHNRSWP_Varieties_Variety {
 		
 		$this->model->cwp_save_variety( $post_id );
 		
+		$updated_content = $this->view->cwp_get_save_content_view();
+				
+		$post_data = array(
+			'ID' 		   => $post_id,
+			'post_content' => $updated_content,	
+			);
+			
+		wp_update_post( $post_data );
+		
 	} //end method cwp_save_variety
 	
 } // end CAHNRSWP_Varieties_Variety

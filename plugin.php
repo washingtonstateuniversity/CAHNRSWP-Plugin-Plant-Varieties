@@ -47,7 +47,7 @@ class init_CAHNRSWP_varieties {
 		
 		//add_action( 'add_meta_boxes', array( $this , 'register_meta_box' ) );
 		
-		add_action( 'save_post', array( $this , 'cwp_save_post' ) );
+		add_action( 'save_post_variety', array( $this , 'cwp_save_post' ) );
 		
 		add_action( 'admin_enqueue_scripts', array( $this , 'add_admin_scripts' ) );
 		
@@ -80,6 +80,8 @@ class init_CAHNRSWP_varieties {
 	 * @param int $post_id
 	*/
 	public function cwp_save_post( $post_id ){
+		
+		remove_action( 'save_post_variety', array( $this, 'cwp_save_post' ) );
 		
 		require_once CAHNRSWPVARIETYDIR . '/classes/class-cahnrswp-varieties-variety.php';
 		
@@ -132,7 +134,7 @@ class init_CAHNRSWP_varieties {
 			'show_in_menu'       => true,
 			'query_var'          => true,
 			'rewrite'            => array( 'slug' => 'variety' ),
-			'capability_type'    => 'post',
+			'capability_type'    => 'page',
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,

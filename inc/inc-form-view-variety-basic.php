@@ -5,6 +5,7 @@
         <select name="_variety[type]">
             <option value="">Select</option>
             <option value="apple" <?php selected( $this->model->type , 'apple' ); ?> >Apple</option>
+            <option value="pear" <?php selected( $this->model->type , 'pear' ); ?> >Pear</option>
         </select>
     </p>
 </div>

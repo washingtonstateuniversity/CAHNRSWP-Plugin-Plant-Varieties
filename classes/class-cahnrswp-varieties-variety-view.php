@@ -20,5 +20,15 @@ class CAHNRSWP_Varieties_Variety_View {
 		
 	} // end method output_editor
 	
+	public function cwp_get_save_content_view(){
+		
+		ob_start();
+		
+		include CAHNRSWPVARIETYDIR . '/inc/inc-display-variety-basic.php';
+		
+		return ob_get_clean();
+		
+	}
+	
 	
 } // end CAHNRSWP_Varieties_Variety
