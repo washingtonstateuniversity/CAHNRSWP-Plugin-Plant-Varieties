@@ -45,6 +45,20 @@ class CAHNRSWP_Varieties_Variety_Model {
 			'storability'    => 'text',
 			);
 	
+	private $tag_fields = array(
+						'type',
+						'harvest',
+						'flavor_profile',
+						'IP',
+						'origin_country',
+						'origin',
+						'storability',
+					);
+	
+	private $cat_fields = array(
+						'type',
+					);
+	
 	/*
 	 * @desc - Retrieves post meta and sets class properties
 	 * @param object $post - WP Post object
@@ -156,123 +170,72 @@ class CAHNRSWP_Varieties_Variety_Model {
 		
 		update_post_meta( $post_id , '_variety' , $varieties );
 		
-		$this->cwp_set_tags( $post_id );
-		
-		
-		
-		//if( isset( $this->harvest ) ){
-			
-			//$terms = explode( ',' , $this->harvest );
-			
-			//$term_slugs = array();
-			
-			//foreach( $terms as $term ){
+		/*
+		 * Dynamically set post tags from text fields
+		*/
 				
-				//$term_data = get_term_by( 'name' , $term , 'post_tag' ); 
-				
-				//wp_set_object_terms( $post_id, $term_data->slug , 'post_tag', true );
-				
-				
-				/*$term_data = get_term_by( 'name' , $term , 'post_tag'); 
-				
-				if ( $term_data ){
+		$tags = array();
 					
-					$term_slugs 
-					
-				} else {
-				}*/
-				
-				
-				
-				//$term_data = term_exists( $term , 'post_tag' );
-				
-				//if( $term_data ) {
-					
-					//$term_ids[] = $term_data['term_id'];
-					
-				//} else {
-				
-					//$term_data = wp_insert_term( $term , 'post_tag' );
-					
-					//$term_ids[] = $term_data['term_id'];
-				
-				//}
-				 
-			//}; // end foreach
-			
-			//if ( ! empty( $term_ids ) ){
-				
-				//wp_set_object_terms( $post_id, $term_ids, 'post_tag', true );
-				
-			//}; // end if
-			
-		//}; // end if
-		
-		
-	} // end method cwp_save_variety
-	
-	/*
-	 * @desc - Sets tags from data
-	 * @param int $post_id
-	*/
-	private function cwp_set_tags( $post_id ){
-		
-		$tag_fields = array(
-						'harvest',
-						'flavor_profile',
-						'IP',
-						'origin_country',
-						'origin',
-						'storability',
-					);
-					
-		$term_slugs = array();
-					
-		foreach( $tag_fields as $tag_field ){
+		foreach( $this->tag_fields as $tag_field ){
 			
 			if ( isset( $this->$tag_field ) && $this->$tag_field ){
 				
-				$terms = explode( ',' , $this->$tag_field );
+				$tag_list = $this->cwp_clean_tax_list( $this->$tag_field );
 				
-				foreach( $terms as $term ){
+				if ( $tag_list ) {
 					
-					if( $term ){
+					$tags = array_merge( $tags , $tag_list );
 					
-						$term_data = get_term_by( 'name' , trim( $term ) , 'post_tag' ); 
-						
-						//var_dump( $term_data->term_id ); 
-						
-						//var_dump( $term );
-						
-						if ( ! $term_data ){
-							
-							$term_data = wp_insert_term( $term, 'post_tag' );
-							
-							if ( ! empty( $term_data['term_id'] ) ) {
-								
-								$term_slugs[] = $term_data['term_id'];
-								
-							}; // end if
-							
-						} else {
-							
-							$term_slugs[] = $term_data->term_id;
-							
-						}; // end if
-						
-					}; // end if
-					 
-				}; // end foreach
+				}; // end if
 				
 			}; // end if
 			
 		}; // end foreach
 		
-		//var_dump( $term_slugs );
-				
-		wp_set_object_terms( $post_id, $term_slugs , 'post_tag', true );
+		wp_set_object_terms( $post_id, $tags , 'post_tag', true );
 		
-	} // end method cwp_set_tags
+		/*
+		 * Dynamically set post categories from text fields
+		*/
+		
+		$cats = array();
+					
+		foreach( $this->cat_fields as $cat_field ){
+			
+			if ( isset( $this->$cat_field ) && $this->$cat_field ){
+				
+				$cat_list = $this->cwp_clean_tax_list( $this->$cat_field );
+				
+				if ( $cat_list ) {
+					
+					$cats = array_merge( $cats , $cat_list );
+					
+				}; // end if
+				
+			}; // end if
+			
+		}; // end foreach
+		
+		wp_set_object_terms( $post_id, $cats , 'category', true );
+		
+		
+	} // end method cwp_save_variety
+	
+	
+	
+	private function cwp_clean_tax_list( $tax_list ) {
+		
+		$tax_list = explode( ',' , $tax_list );
+		
+		foreach ( $tax_list as &$tax ) {
+			
+			$tax = trim( $tax );
+			
+		}; // end foreach
+		
+		return $tax_list;
+		
+	} // end method cwp_clean_tags
 	
 	/*
 	 * @desc - Cleans post values based on $fields
