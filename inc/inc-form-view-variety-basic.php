@@ -4,8 +4,9 @@
         <label>Variety Type: </label>
         <select name="_variety[type]">
             <option value="">Select</option>
-            <option value="apple" <?php selected( $this->model->type , 'apple' ); ?> >Apple</option>
-            <option value="pear" <?php selected( $this->model->type , 'pear' ); ?> >Pear</option>
+            <option value="apple" <?php selected( $variety['type'] , 'apple' ); ?> >Apple</option>
+            <option value="pear" <?php selected( $variety['type'] , 'pear' ); ?> >Pear</option>
+            <option value="cherry" <?php selected( $variety['type'] , 'cherry' ); ?> >Cherry</option>
         </select>
     </p>
 </div>
