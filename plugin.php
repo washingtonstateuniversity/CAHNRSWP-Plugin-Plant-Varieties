@@ -57,7 +57,7 @@ class CAHNRSWP_Varieties extends CCL_Admin_Post_Varieties {
 				'tax'    => 'post_tag', 
 				'type'   => 'text' 
 				),
-			'IP'             => array( 
+			'ip'             => array( 
 				'title'  => 'IP Status', 
 				'tax'    => 'post_tag', 
 				'type'   => 'text' 
@@ -138,7 +138,7 @@ class CAHNRSWP_Varieties extends CCL_Admin_Post_Varieties {
 				'tax'    => 'post_tag', 
 				'type'   => 'text' 
 				),
-			'IP'             => array( 
+			'ip'             => array( 
 				'title'  => 'IP Status', 
 				'tax'    => 'post_tag', 
 				'type'   => 'text' 
@@ -309,9 +309,13 @@ class CAHNRSWP_Varieties extends CCL_Admin_Post_Varieties {
 				
 				$html .= '<div id="' . $id . '" class="cwpvarietytab-wrapper" >';
 				
+				$t_class = 'active';
+				
 				foreach( $field_set['values'] as $field_name => $field_title ){
 					
-					$html .= '<a href="#" class="cwpvarietytab-tab" style="display: inline-block; vertical-align: bottom; padding: 0.25rem 1rem;">' . $field_title . '</a>';
+					$html .= '<a href="#" class="' . $t_class . ' cwpvarietytab-tab" style="display: inline-block; vertical-align: bottom; padding: 0.25rem 1rem;">' . $field_title . '</a>';
+					
+					$t_class = '';
 					
 				} // end foreach
 				
@@ -352,7 +356,7 @@ class CAHNRSWP_Varieties extends CCL_Admin_Post_Varieties {
 				
 				$html .= '</div>';
 				
-				$html .='<script>if ( typeof jQuery !== undefined ){ jQuery( "body").on( "click" , "#' . $id . ' > .cwpvarietytab-tab" , function(event){ var c = jQuery( this ); var p = c.parent(); event.preventDefault; c.addClass( "active" ).siblings(".cwpvarietytab-tab").removeClass( "active"); p.find( ".cwpvarietytab-content").eq( c.index() ).show().siblings( ".cwpvarietytab-content" ).hide(); });};</script>';
+				$html .='<script>void 0!==typeof jQuery&&jQuery("body").on("click","#' . $id . ' > .cwpvarietytab-tab",function(t){var e=jQuery(this),a=e.parent();t.preventDefault(),e.addClass("active").siblings(".cwpvarietytab-tab").removeClass("active"),a.find(".cwpvarietytab-content").eq(e.index()).show().siblings(".cwpvarietytab-content").hide()});</script>';
 				
 			} // end if 
 			
@@ -371,6 +375,8 @@ class CAHNRSWP_Varieties extends CCL_Admin_Post_Varieties {
 			
 			$fields = $this->get_variety_fields( $atts['type'] );
 			
+			
+			
 			$html .= '<div class="cwp-variety-wrapper" style="padding-bottom: 2rem;">';
 			
 				$html .= '<div class="cwp-variety-image" style="display: inline-block; vertical-align: top; width: 30%; margin-right: 2%;">';
@@ -388,6 +394,7 @@ class CAHNRSWP_Varieties extends CCL_Admin_Post_Varieties {
 			$html .= '<table>';
 				
 			foreach( $fields as $field => $field_data ){
+				
 				
 				$html .= '<tr style="border-bottom: 1px solid #ddd">';
 				
@@ -656,7 +663,7 @@ class CAHNRSWP_Varieties extends CCL_Admin_Post_Varieties {
 			'hierarchical'       => false,
 			'menu_position'      => null,
 			'taxonomies' => array( 'category' , 'post_tag' ),
-			'supports'           => array( 'title', 'thumbnail' )
+			'supports'           => array( 'title', 'thumbnail', 'editor' )
 		); // end $args
 	
 		register_post_type( 'variety', $args );
